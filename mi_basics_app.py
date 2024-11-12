@@ -142,12 +142,15 @@ if selected_dataset:
     # Real-Time Prediction
     if st.checkbox("Make a Prediction") and model_type in ["Linear Regression", "Decision Tree Classifier", "Random Forest", "SVM"]:
         st.write("### Make a Real-Time Prediction")
-        user_data = {}
-        for feature in features:
-            user_data[feature] = st.number_input(f"Input value for {feature}", float(X[feature].mean()))
-        input_df = pd.DataFrame([user_data])
-        prediction = model.predict(input_df)
-        st.write("Prediction:", prediction)
+        if 'features' in locals() and features:
+            user_data = {}
+            for feature in features:
+                user_data[feature] = st.number_input(f"Input value for {feature}", float(X[feature].mean()))
+            input_df = pd.DataFrame([user_data])
+            prediction = model.predict(input_df)
+            st.write("Prediction:", prediction)
+        else:
+            st.write("Please select features and train the model before making predictions.")
 
     # Save and Load Model
     if st.button("Save Model") and model_type in ["Linear Regression", "Decision Tree Classifier", "Random Forest", "SVM"]:
